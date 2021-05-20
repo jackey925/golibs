@@ -34,6 +34,7 @@ func SignMd5(validateParams url.Values, secret string) string {
 	return sb.ToString()
 }
 
+
 func HexSignMd5(validateParams url.Values, secret string) string {
 	keys := make([]string, 0, len(validateParams))
 	for key := range validateParams {
