@@ -6,6 +6,7 @@ import (
 	"encoding/binary"
 	"io/ioutil"
 	"strconv"
+	"unsafe"
 )
 
 func ZlibZipBytes(input []byte) ([]byte, error) {
@@ -99,7 +100,7 @@ func HexStringToBytes(hex_str string) []byte {
 	return byte_array
 }
 
-//整形转换成字节
+// UIntToBytes 整形转换成字节
 func UIntToBytes(value uint32) []byte {
 	arr := []byte{0, 0, 0, 0}
 	arr[3] = byte((value >> 24) & 0xff)
@@ -109,7 +110,21 @@ func UIntToBytes(value uint32) []byte {
 	return arr
 }
 
-//字节转换成整形
+// BytesToUInt 字节转换成整形
 func BytesToUInt(b []byte) uint32 {
 	return binary.LittleEndian.Uint32(b)
+}
+
+func StringToBytes(s string) []byte {
+	return *(*[]byte)(unsafe.Pointer(
+		&struct {
+			string
+			Cap int
+		}{s, len(s)},
+	))
+}
+
+// BytesToString converts byte slice to string without a memory allocation.
+func BytesToString(b []byte) string {
+	return *(*string)(unsafe.Pointer(&b))
 }
