@@ -26,6 +26,7 @@ func (s *StringBuilder) AppendForString(obj string) *StringBuilder {
 	return s
 }
 
+
 func (s *StringBuilder) AppendForBytes(obj []byte) *StringBuilder {
 	s.buf.Write(obj)
 	return s
