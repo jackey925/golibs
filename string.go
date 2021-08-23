@@ -12,6 +12,7 @@ import (
 	"math/big"
 	math_rand "math/rand"
 	"net"
+	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
@@ -510,6 +511,21 @@ func ToConfusedZipBase64(str string) string {
 func ToConfusedBase64(str string) string {
 	b := ConfusedTwo(StringToSliceByte(str))
 	return Base64(b)
+}
+
+//ConfusedBase64ForQueryEscape 混淆后转换成base64 url编码格式
+func ConfusedBase64ForQueryEscape(str string) string {
+	b := ConfusedTwo(StringToSliceByte(str))
+	return url.QueryEscape(Base64(b))
+}
+
+//UnBase64ToConfused 反混淆数据
+func UnBase64ToConfused(str string) (string,error) {
+	by,err:= UnBase64(str)
+	if err != nil{
+		return "",err
+	}
+	return SliceByteToString(UnConfusedTwo(by)),nil
 }
 
 //生成简单随机密码，短时间内会重复
